@@ -37,8 +37,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'registration',
-    'approvedoc',
-    'product',
     'requestdoc',
     'user_detail'
 )
