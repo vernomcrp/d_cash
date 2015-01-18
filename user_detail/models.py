@@ -5,12 +5,12 @@ from requestdoc.models import RequestDoc
 
 class ConsumerDetail(models.Model):
     owner = models.ForeignKey(User)
-    request_doc = models.ForeignKey(RequestDoc)
+    consumer_name = models.TextField(max_length=100, verbose_name='Consumer Name')
     address = models.TextField(max_length=300, verbose_name="Consumer Address")
     tax_number = models.CharField(max_length=50, verbose_name="Consumer Tax Number")
 
     def __unicode__(self):
-        return u'req. document no. (%s)' % self.request_doc.
+        return u'tax no. (%s)' % self.tax_number
 
 
 ROLES = (

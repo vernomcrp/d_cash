@@ -1,0 +1,19 @@
+{% extends "requestdoc/base.html" %}
+{% block content %}
+
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+<form method="post" action="{% url 'requestdoc.views.login_view' %}">
+{% csrf_token %}
+<table>
+    <tr><td>Username</td><td><input type="text" id="username" name="username"/></td></tr>
+    <tr><td>Password</td><td><input type="password" id="password" name="password"/></td></tr>
+</table>
+
+<input type="submit" value="login" />
+<input type="hidden" name="next" value="{{ next }}" />
+</form>
+
+{% endblock %}

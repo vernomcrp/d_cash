@@ -1,0 +1,26 @@
+{% block content %}
+
+    <h1>คำขอหนังสือตรวจปล่อย</h1>
+
+    <div>
+        <div><h2>ข้อมูลผู้ร้องขอ</h2></div>
+        <div>
+            <div>Requester Name : {{ consumer.consumer_name }}</div>
+            <div>Requester Address : {{ consumer.address }}</div>
+            <div>Tax No. : {{ consumer.tax_number }}</div>
+        </div>
+    </div>
+
+    <div>
+        <div><h2>Request's Detail</h2></div>
+    <form method="post" action="{% url 'requestdoc.views.request_document_view' %}">
+        {%  csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+        <input type="submit" value="Save" />
+        <input type="button" value="Cancel" />
+    </form>
+    </div>
+
+{% endblock %}

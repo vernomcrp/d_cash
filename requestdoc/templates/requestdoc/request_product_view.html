@@ -1,0 +1,50 @@
+{% block content %}
+
+    <h1>คำขอหนังสือตรวจปล่อย</h1>
+
+    <div>
+        <div><h2>เลขหนังสือปล่อย</h2></div>
+        <div>
+            เลขที่ {{ request_doc.request_doc_number }}*
+        </div>
+    </div>
+
+    <div>
+        <div><h2>Good's Detail</h2></div>
+        <form method="post" action="{% url 'requestdoc.views.request_identify_good' %}">
+            {%  csrf_token %}
+            <table>
+                {{ form.as_table }}
+            </table>
+            <input type="submit" value="Save" />
+            <input type="button" value="Cancel" />
+        </form>
+    </div>
+    <div>
+        <table>
+        <tr>
+            <td>ลำดับที่</td><td>ผลิตภัณฑ์</td><td>มอกเลขที่</td><td>ใบอนุญาตเลขที่</td><td>จำนวน(หน่วย)</td><td>แก้ไข</td><td>ลบ</td>
+        </tr>
+        {% if products %}
+            {% for product in products %}
+                <tr>
+                    <td></td>
+                    <td>{{ product.product_name }}</td>
+                    <td>{{ product.standard_industrial_no  }}</td>
+                    <td>{{ product.license_no }}</td>
+                    <td>{{ product.quantity }} x {{ product.unit }} </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+            {% endfor %}
+        {% endif %}
+        </table>
+    </div>
+    <div>
+        <form method="post" action="">
+            <input type="submit" value="Send Request to Officer" />
+        </form>
+    </div>
+
+{% endblock %}
