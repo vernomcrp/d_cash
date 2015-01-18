@@ -1,6 +1,12 @@
 from django.contrib import admin
 
-# Register your models here.
-from requestdoc.models import RequestDoc
+from requestdoc.models import RequestDoc, Invoice, Product
 
-admin.site.register(RequestDoc)
+
+class RequestDocAdmin(admin.ModelAdmin):
+    #Todo plan something here
+    pass
+
+admin.site.register(RequestDoc, RequestDocAdmin)
+admin.site.register(Invoice)
+admin.site.register(Product)
