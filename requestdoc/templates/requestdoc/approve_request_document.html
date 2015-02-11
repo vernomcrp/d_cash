@@ -1,0 +1,28 @@
+{% extends "requestdoc/base.html" %}
+{% block content %}
+    <p>
+    สถานะหนังสือตรวจปล่อย
+    </p>
+    <p>
+        <table>
+            <tr><th>เลขหนังสือตรวจปล่อย</th><th>ยื่นคำขอวันที่</th><th>สถานะ</th><th></th></tr>
+            {% for item in items %}
+
+                <tr>
+                    <td>{{ item.request_doc_number }}</td>
+                    <td>{{ item.payin.created_date }}</td>
+                    <td>{% if item.payin.approve %} Approved {% else %} Not approved yet {% endif %}</td>
+                    <td>
+                        {% if not item.payin.approve %}
+                            <form method='POST' name="approve_request_doc_{{ item.payin.id }}" action="{% url 'requestdoc.views.approve_request_document' %}">
+                                {%  csrf_token %}
+                                <input type="hidden" name="approve_payin_id" id="approve_payin_id" value="{{ item.payin.id }}"/>
+                                <input type="submit" value="Approve"/>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </p>
+{% endblock %}

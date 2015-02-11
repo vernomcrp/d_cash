@@ -1,0 +1,19 @@
+{% extends "requestdoc/base.html" %}
+{% block content %}
+    <p>
+    สถานะหนังสือตรวจปล่อย
+    </p>
+    <p>
+        <table>
+            <tr><th>เลขหนังสือตรวจปล่อย</th><th>ยื่นคำขอวันที่</th><th>สถานะ</th></tr>
+            {% for item in items %}
+
+                <tr>
+                    <td>{{ item.request_doc_number }}</td>
+                    <td>{{ item.payin.created_date }}</td>
+                    <td>{% if item.payin.approve %} Approved {% else %} Not approved yet {% endif %}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </p>
+{% endblock %}

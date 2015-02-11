@@ -5,11 +5,15 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
+from payin.models import PayIn
 from requestdoc.forms import InvoiceForm, ProductForm
 from requestdoc.models import Invoice, RequestDoc, Product
-
+from datetime import datetime
 
 def login_view(request):
+
+    context = {}
+
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -18,7 +22,7 @@ def login_view(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                return redirect('/requestdoc/request/')
+                return redirect('/requestdoc/request_menu/')
 
             else:
                 return HttpResponse('disabled account')
@@ -26,7 +30,7 @@ def login_view(request):
             return HttpResponse('login error')
     else:
 
-        return render(request, 'requestdoc/login.html', {})
+        return render(request, 'requestdoc/login.html', context)
 
 
 def logout_view(request):
@@ -39,7 +43,7 @@ def request_document_view(request):
     user = request.user
     if request.method == 'GET':
         context.update({
-            'consumer': user.consumerdetail_set.all()[0],
+            'consumer': user.consumerdetail_set.all()[0] if len(user.consumerdetail_set.all()) else None,
             'form': InvoiceForm()
         })
 
@@ -79,6 +83,26 @@ def request_document_view(request):
     return render(request, 'requestdoc/request_view.html', context)
 
 
+def get_current_time():
+    return datetime.today()
+
+@login_required
+def complete_request_process(request):
+
+    context = {}
+
+    if request.method == 'POST':
+        request_doc_no = request.session.get('request_doc_no', None)
+        request_doc_obj = RequestDoc.objects.get(request_doc_number=request_doc_no)
+
+        payin = PayIn()
+        payin.request_document = request_doc_obj
+        payin.created_date = get_current_time()
+        payin.save()
+
+        return render(request, 'requestdoc/complete_request_process.html', context)
+
+
 def request_identify_good(request):
     context = {}
     request_doc_id = request.session.get('request_doc_id', None)
@@ -116,3 +140,41 @@ def request_identify_good(request):
                 return HttpResponseRedirect('/requestdoc/request_identify_good/')
 
         return render(request, 'requestdoc/request_product_view.html', context)
+
+@login_required
+def list_request_document_status(request):
+    if request.method == 'GET':
+        request_docs = RequestDoc.objects.filter(request_user=request.user)
+        filtered_docs = filter(__find_matched_payin, request_docs)
+        return render(request, 'requestdoc/request_document_status.html', {'items': filtered_docs})
+
+
+def __find_matched_payin(request_doc):
+    #TODO this is suck, please refactor
+    payins = PayIn.objects.filter(request_document=request_doc)
+    return True if len(payins) else False
+
+
+@login_required
+def request_menu(request):
+    context = {'user': request.user}
+    if request.method == 'GET':
+        return render(request, 'requestdoc/request_menu.html', context)
+
+
+@login_required
+def approve_request_document(request):
+    if request.method == 'GET':
+        filtered_docs = filter(__find_matched_payin, RequestDoc.objects.all())
+        return render(request, 'requestdoc/approve_request_document.html', {'items': filtered_docs })
+
+    elif request.method == 'POST':
+        payin_id = request.POST.get('approve_payin_id', None)
+        if payin_id:
+            payin = PayIn.objects.get(id=payin_id)
+            payin.approve = True
+            payin.approved_date = datetime.today()
+            payin.save()
+            return redirect('/requestdoc/approve_document/')
+        else:
+            print 'Cannot get payin id from frontend'

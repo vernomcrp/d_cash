@@ -38,7 +38,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'registration',
     'requestdoc',
-    'user_detail'
+    'user_detail',
+    'payin',
 )
 
 MIDDLEWARE_CLASSES = (

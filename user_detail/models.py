@@ -21,4 +21,7 @@ ROLES = (
 
 class UserDetail(models.Model):
     owner = models.OneToOneField(User)
-    role = models.CharField(max_length=1, choices=ROLES)
+    role = models.CharField(max_length=1, choices=ROLES, default='C')
+
+    def is_officer(self):
+        return True if self.role == 'O' else False
