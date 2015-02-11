@@ -8,17 +8,16 @@
     <h1>ใบนำฝากชำระเงินค่าสินค้าและบริการ</h1>
     <div>สำหรับลูกค้า</div>
     <div id="company-detail">
-        <div>{company_name}</div>
-        <div>{telephone_number}</div>
-        <div>{tax_no}</div>
+        <div>Consumer Name : {{ detail.company_name }}</div>
+        <div>Consumer Address : {{ detail.address }}</div>
+        <div>Consumer Tax No. : {{ detail.tax_number }}</div>
     </div>
 
     <h1>สำหรับเจ้าหน้าที่ธนาคาร</h1>
     <div id="company-detail">
-        <div>{company_name}</div>
-        <div>{telephone_number}</div>
-        <div>{tax_no}</div>
+        <div>Consumer Name : {{ detail.company_name }}</div>
+        <div>Consumer Address : {{ detail.address }}</div>
+        <div>Consumer Tax No. : {{ detail.tax_number }}</div>
     </div>
-    <div><img src="barcode"></div>
-</body>
+    <div><img src="{{ STATIC_URL }}{{ filename }}"></div>
 </html>
