@@ -9,6 +9,7 @@ from payin.models import PayIn
 from requestdoc.forms import InvoiceForm, ProductForm
 from requestdoc.models import Invoice, RequestDoc, Product
 from datetime import datetime
+import random
 
 def login_view(request):
 
@@ -60,7 +61,7 @@ def request_document_view(request):
 
             request_doc = RequestDoc()
             request_doc.request_user = user
-            request_doc.request_doc_number = "989898989"
+            request_doc.request_doc_number = '{0:010}'.format(random.randint(1,100000))
             request_doc.save()
 
             current_invoice = Invoice()
@@ -92,7 +93,8 @@ def complete_request_process(request):
     context = {}
 
     if request.method == 'POST':
-        request_doc_no = request.session.get('request_doc_no', None)
+        #request_doc_no = request.session.get('request_doc_no', None)
+        request_doc_no = request.POST.get('request_doc_no', None)
         request_doc_obj = RequestDoc.objects.get(request_doc_number=request_doc_no)
 
         payin = PayIn()
