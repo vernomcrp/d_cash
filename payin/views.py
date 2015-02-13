@@ -4,8 +4,9 @@ from django.shortcuts import render
 from barcode import generate
 
 # Create your views here.
+import os
 from requestdoc.models import RequestDoc
-
+from d_cash.settings import STATIC_ROOT
 
 @login_required
 def display_payin(request, request_doc_id):
@@ -21,7 +22,7 @@ def display_payin(request, request_doc_id):
         }
 
         rdoc = RequestDoc.objects.get(request_user=user, request_doc_number=request_doc_id)
-        filename = generate_barcode(rdoc.request_doc_number, filename='example.svg')
+        filename = generate_barcode(rdoc.request_doc_number, filename=os.path.join(STATIC_ROOT, 'test_svg'))
         return render(request, 'payin/payin_print_ready.html', {'filename': 'example.svg', 'detail': detail})
 
 
