@@ -1,7 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
-# Create your views here.
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
@@ -11,8 +10,8 @@ from requestdoc.models import Invoice, RequestDoc, Product
 from datetime import datetime
 import random
 
-def login_view(request):
 
+def login_view(request):
     context = {}
 
     if request.method == 'POST':
@@ -40,16 +39,15 @@ def logout_view(request):
 
 @login_required
 def request_document_view(request):
-    context = {}
     user = request.user
+    context = {
+        'consumer': user.consumerdetail_set.all()[0] if len(user.consumerdetail_set.all()) else None
+    }
     if request.method == 'GET':
-        context.update({
-            'consumer': user.consumerdetail_set.all()[0] if len(user.consumerdetail_set.all()) else None,
-            'form': InvoiceForm()
-        })
+        context.update({'form': InvoiceForm()})
 
     elif request.method == 'POST':
-        form = InvoiceForm(request.POST)
+        form = InvoiceForm(request.POST, request.FILES)
         if form.is_valid():
             invoice_no = form.cleaned_data['invoice_no']
             invoice_date = form.cleaned_data['invoice_date']
@@ -61,14 +59,14 @@ def request_document_view(request):
 
             request_doc = RequestDoc()
             request_doc.request_user = user
-            request_doc.request_doc_number = '{0:010}'.format(random.randint(1,100000))
+            request_doc.request_doc_number = '{0:010}'.format(random.randint(1, 100000))
             request_doc.save()
 
             current_invoice = Invoice()
             current_invoice.request_doc = request_doc
             current_invoice.invoice_no = invoice_no
             current_invoice.invoice_date = invoice_date
-            current_invoice.invoice_file = None
+            current_invoice.invoice_file = invoice_file
             current_invoice.location_x = location_x
             current_invoice.location_y = location_y
             current_invoice.factory = factory_outside
@@ -80,6 +78,8 @@ def request_document_view(request):
             request.session['invoice_id'] = current_invoice.id
 
             return HttpResponseRedirect('/requestdoc/request_identify_good/')
+        else:
+            context.update({'form': form})
 
     return render(request, 'requestdoc/request_view.html', context)
 
@@ -87,13 +87,12 @@ def request_document_view(request):
 def get_current_time():
     return datetime.today()
 
+
 @login_required
 def complete_request_process(request):
-
     context = {}
 
     if request.method == 'POST':
-        #request_doc_no = request.session.get('request_doc_no', None)
         request_doc_no = request.POST.get('request_doc_no', None)
         request_doc_obj = RequestDoc.objects.get(request_doc_number=request_doc_no)
 
@@ -139,7 +138,17 @@ def request_identify_good(request):
                 product.unit = unit
 
                 product.save()
+
                 return HttpResponseRedirect('/requestdoc/request_identify_good/')
+            else:
+                invoice = Invoice.objects.get(id=invoice_id)
+                context.update({
+                    'request_doc': RequestDoc.objects.get(id=request_doc_id),
+                    'form': form,
+                    'products': invoice.product_set.all()
+                })
+
+                return render(request, 'requestdoc/request_product_view.html', context)
 
         return render(request, 'requestdoc/request_product_view.html', context)
 
@@ -152,7 +161,7 @@ def list_request_document_status(request):
 
 
 def __find_matched_payin(request_doc):
-    #TODO this is suck, please refactor
+    # TODO this is suck, please refactor
     payins = PayIn.objects.filter(request_document=request_doc)
     return True if len(payins) else False
 
@@ -168,7 +177,7 @@ def request_menu(request):
 def approve_request_document(request):
     if request.method == 'GET':
         filtered_docs = filter(__find_matched_payin, RequestDoc.objects.all())
-        return render(request, 'requestdoc/approve_request_document.html', {'items': filtered_docs })
+        return render(request, 'requestdoc/approve_request_document.html', {'items': filtered_docs})
 
     elif request.method == 'POST':
         payin_id = request.POST.get('approve_payin_id', None)

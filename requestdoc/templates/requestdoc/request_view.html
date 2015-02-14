@@ -14,11 +14,10 @@
 
     <div>
         <div><h2>Request's Detail</h2></div>
-    <form method="post" action="{% url 'requestdoc.views.request_document_view' %}">
+    <form method="post" action="{% url 'requestdoc.views.request_document_view' %}" enctype="multipart/form-data">
         {%  csrf_token %}
-        <table>
-            {{ form.as_table }}
-        </table>
+
+        {{ form.as_p }}
         <input type="submit" value="Save" />
         <input type="button" value="Cancel" />
     </form>

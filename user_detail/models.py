@@ -10,7 +10,7 @@ class ConsumerDetail(models.Model):
     tax_number = models.CharField(max_length=50, verbose_name="Consumer Tax Number")
 
     def __unicode__(self):
-        return u'tax no. (%s)' % self.tax_number
+        return u'%s, Tax No. (%s)' % (self.consumer_name, self.tax_number)
 
 
 ROLES = (
@@ -22,6 +22,9 @@ ROLES = (
 class UserDetail(models.Model):
     owner = models.OneToOneField(User)
     role = models.CharField(max_length=1, choices=ROLES, default='C')
+
+    def __unicode__(self):
+        return u'%s is Officer (%s)' % (self.owner.username, self.is_officer())
 
     def is_officer(self):
         return True if self.role == 'O' else False

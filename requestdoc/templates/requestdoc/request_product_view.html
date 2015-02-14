@@ -14,9 +14,7 @@
         <div><h2>Good's Detail</h2></div>
         <form method="post" action="{% url 'requestdoc.views.request_identify_good' %}">
             {%  csrf_token %}
-            <table>
-                {{ form.as_table }}
-            </table>
+            {{ form.as_p }}
             <input type="submit" value="Save" />
             <input type="button" value="Cancel" />
         </form>
@@ -44,7 +42,6 @@
     </div>
     <div>
         <form method="post" action="{% url 'requestdoc.views.complete_request_process' %}">
-{#        <form method="post" action="">#}
             {%  csrf_token %}
             <input type="submit" value="Send Request to Officer" />
             <input type="hidden" name="request_doc_no" value="{{ request_doc.request_doc_number }}" />
