@@ -18,3 +18,4 @@ class ProductForm(forms.Form):
     product_name = forms.CharField(max_length=300, label='Product Name')
     quantity = forms.IntegerField(label='Quantity')
     unit = forms.CharField(max_length=30, label='Product Unit')
+    hs_code = forms.CharField(max_length=30, label='HS Code')

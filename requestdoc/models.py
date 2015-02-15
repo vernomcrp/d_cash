@@ -36,7 +36,8 @@ class Product(models.Model):
     product_name = models.TextField(max_length=300)
     quantity = models.IntegerField()
     unit = models.CharField(max_length=30)
+    hs_code = models.CharField(max_length=50)
 
     def __unicode__(self):
-        return 'Invoice No. (%s), License No. (%s), Product Name (%s) %s %s' % \
-               (self.invoice.invoice_no, self.license_no, self.product_name, self.quantity, self.unit)
+        return 'Invoice No. (%s), License No. (%s), Product Name (%s) %s %s (hsCode %s)' % \
+               (self.invoice.invoice_no, self.license_no, self.product_name, self.quantity, self.unit, self.hs_code)
