@@ -11,14 +11,31 @@
                 <tr>
                     <td>{{ item.request_doc_number }}</td>
                     <td>{{ item.payin.created_date }}</td>
-                    <td>{% if item.payin.approve %} Approved {% else %} Not approved yet {% endif %}</td>
                     <td>
-                        {% if not item.payin.approve %}
-                            <form method='POST' name="approve_request_doc_{{ item.payin.id }}" action="{% url 'requestdoc.views.approve_request_document' %}">
-                                {%  csrf_token %}
-                                <input type="hidden" name="approve_payin_id" id="approve_payin_id" value="{{ item.payin.id }}"/>
-                                <input type="submit" value="Approve"/>
-                            </form>
+                        {% if item.payin.paid %}
+                            {% if item.payin.approve %}
+                                Approved
+                            {% else %}
+                                Waiting for Approve
+                            {% endif %}
+                        {% else %}
+                            Waiting for Payment
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if item.payin.paid %}
+                            {% if not item.payin.approve %}
+                                <form
+                                        method='POST'
+                                        name="approve_request_doc_{{ item.payin.id }}"
+                                        action="{% url 'requestdoc.views.approve_request_document' %}">
+                                    {%  csrf_token %}
+                                    <input type="hidden" name="approve_payin_id" id="approve_payin_id" value="{{ item.payin.id }}"/>
+                                    <input type="submit" value="Approve"/>
+                                </form>
+                            {% endif %}
+                        {% else %}
+                            Cannon approve now
                         {% endif %}
                     </td>
                 </tr>

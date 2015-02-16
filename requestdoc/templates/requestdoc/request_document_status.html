@@ -11,9 +11,19 @@
                 <tr>
                     <td>{{ item.request_doc_number }}</td>
                     <td>{{ item.payin.created_date }}</td>
-                    <td>{% if item.payin.approve %} Approved {% else %} Not approved yet {% endif %}</td>
                     <td>
-                        {% if item.payin.approve %}
+                        {% if item.payin.paid %}
+                            {% if item.payin.approve %}
+                                Approved
+                            {% else %}
+                                Waiting for Approve
+                            {% endif %}
+                        {% else %}
+                            Waiting for Payment
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if not  item.payin.approve %}
                             <a href="{% url 'payin.views.display_payin' item.request_doc_number %}">Print PayIn</a>
                         {% endif %}
                     </td>

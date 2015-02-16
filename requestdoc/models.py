@@ -21,8 +21,14 @@ class Invoice(models.Model):
                                     upload_to=os.path.join(STATIC_ROOT) + '/invoice_files/%Y/%m/%d')
     location_x = models.CharField(max_length=10, verbose_name="x", null=True, blank=True)
     location_y = models.CharField(max_length=10, verbose_name="y", null=True, blank=True)
-    factory = models.CharField(max_length=150, verbose_name="Factory Name", null=True, blank=True)
-    factory_location = models.TextField(max_length=300, verbose_name="Factory Location", null=True, blank=True)
+    factory = models.CharField(max_length=150,
+                               verbose_name="Factory Name",
+                               help_text='Outside Country',
+                               null=True, blank=True)
+    factory_location = models.TextField(max_length=300,
+                                        verbose_name="Factory Location",
+                                        null=True, blank=True,
+                                        help_text='Outside Country')
 
     def __unicode__(self):
         return u'Invoice No. (%s), Invoice Date (%s)' % (self.invoice_no, self.invoice_date)

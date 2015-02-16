@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import redirect
 from payin.models import PayIn
 from requestdoc.forms import InvoiceForm, ProductForm
@@ -103,9 +103,13 @@ def complete_request_process(request):
         payin = PayIn()
         payin.request_document = request_doc_obj
         payin.created_date = get_current_time()
+        if request.user.userdetail.is_officer():
+            payin.paid = True
         payin.save()
 
         return render(request, 'requestdoc/complete_request_process.html', context)
+    else:
+        return HttpResponseNotFound()
 
 
 def request_identify_good(request):
@@ -153,7 +157,8 @@ def request_identify_good(request):
                 })
 
                 return render(request, 'requestdoc/request_product_view.html', context)
-
+        else:
+            return HttpResponseNotFound()
         return render(request, 'requestdoc/request_product_view.html', context)
 
 @login_required
