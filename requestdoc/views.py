@@ -38,6 +38,10 @@ def logout_view(request):
 
 
 @login_required
+def request_document_view_without_license(request):
+    return render(request, 'requestdoc/request_view_without_license.html', {})
+
+@login_required
 def request_document_view(request):
     user = request.user
     context = {

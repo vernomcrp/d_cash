@@ -3,7 +3,7 @@
     <div>
         <h2>ประเภทคำขอ</h2>
         <a href="{% url 'requestdoc.views.request_document_view' %}">ยื่นคำขอตรวจปล่อยสินค้า กรณีมีใบอนุญาต</a><br>
-        <a href="#">ยื่นคำขอตรวจปล่อยสินค้า กรณีไม่่มีใบอนุญาต</a><br>
+        <a href="{% url 'requestdoc.views.request_document_view_without_license' %}">ยื่นคำขอตรวจปล่อยสินค้า กรณีไม่่มีใบอนุญาต</a><br>
         <a href="{% url 'requestdoc.views.list_request_document_status' %}">ตรวจสถานะคำขอตรวจปล่อยสินค้า</a><br>
         {% if user.userdetail.is_officer %}
             <a href="{% url 'requestdoc.views.approve_request_document' %}">พิจารณาคำขอหนังสือตรวจปล่อย</a><br>
