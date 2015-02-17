@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-
+from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import redirect
@@ -9,6 +9,11 @@ from requestdoc.forms import InvoiceForm, ProductForm
 from requestdoc.models import Invoice, RequestDoc, Product
 from datetime import datetime
 import random
+from django.contrib.auth.models import User
+
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def login_view(request):
@@ -22,6 +27,8 @@ def login_view(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
+                logger.info("logged user=%s, is_officier=%s" % (user, user.userdetail.is_officer()))
+
                 return redirect('/requestdoc/request_menu/')
 
             else:
@@ -43,9 +50,16 @@ def request_document_view_without_license(request):
 
 @login_required
 def request_document_view(request):
-    user = request.user
+    logged_in_user = request.user
+    if not logged_in_user.userdetail.is_officer():
+        request_user = logged_in_user
+    else:
+        request_user_id = request.session.get('request_user_id')
+        request_user = User.objects.get(id=request_user_id)
+
     context = {
-        'consumer': user.consumerdetail_set.all()[0] if len(user.consumerdetail_set.all()) else None
+        'consumer': request_user.consumerdetail_set.all()[0] if len(request_user.consumerdetail_set.all()) else None,
+        'logged_in_user': logged_in_user
     }
     if request.method == 'GET':
         context.update({'form': InvoiceForm()})
@@ -62,7 +76,7 @@ def request_document_view(request):
             factory_outside_location = form.cleaned_data['factory_outside_location']
 
             request_doc = RequestDoc()
-            request_doc.request_user = user
+            request_doc.request_user = request_user
             request_doc.request_doc_number = '{0:010}'.format(random.randint(1, 100000))
             request_doc.save()
 
@@ -80,8 +94,9 @@ def request_document_view(request):
 
             request.session['request_doc_id'] = request_doc.id
             request.session['invoice_id'] = current_invoice.id
+            # request.session['request_user_id'] = request_user.id
 
-            return HttpResponseRedirect('/requestdoc/request_identify_good/')
+            return HttpResponseRedirect(reverse('requestdoc.views.request_identify_good'))
         else:
             context.update({'form': form})
 
@@ -111,11 +126,13 @@ def complete_request_process(request):
     else:
         return HttpResponseNotFound()
 
-
+@login_required
 def request_identify_good(request):
-    context = {}
     request_doc_id = request.session.get('request_doc_id', None)
     invoice_id = request.session.get('invoice_id', None)
+    context = {
+        'logged_in_user': request.user,
+    }
     if request_doc_id and invoice_id:
         if request.method == 'GET':
 

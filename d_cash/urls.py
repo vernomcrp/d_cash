@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^requestdoc/request_menu/$', 'requestdoc.views.request_menu'),
     url(r'^requestdoc/request_document_status/$', 'requestdoc.views.list_request_document_status'),
     url(r'^requestdoc/approve_document/$', 'requestdoc.views.approve_request_document'),
-    url(r'^payin/print/(?P<request_doc_id>\d+)/$', 'payin.views.display_payin')
+    url(r'^payin/print/(?P<request_doc_id>\d+)/$', 'payin.views.display_payin'),
+    url(r'^registration/new_user/$', 'registration.views.registration_page')
 
 )

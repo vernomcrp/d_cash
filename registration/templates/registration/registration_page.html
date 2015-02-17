@@ -1,0 +1,18 @@
+{% extends "requestdoc/base.html" %}
+{% block content %}
+    <p>Logged In as {{ logged_in_user }}</p>
+    <h1>Registration form</h1>
+    <p>
+    <form name="new-user" method="post">
+        {% csrf_token %}
+        <label>Username : </label><input type="text" name="username" /><br>
+        <label>Password : </label><input type="password" name="password" /><br>
+        <label>Email : </label><input type="email" name="email" /><br>
+
+        <label>Consumer Name : </label><input type="text" name="consumer_name" /><br>
+        <label>Address : </label><textarea name="address" ></textarea><br>
+        <label>Tax Number : </label><input type="text" name="tax_number" /><br>
+        <input type="submit" value="Save" />
+    </form>
+    </p>
+{% endblock %}
