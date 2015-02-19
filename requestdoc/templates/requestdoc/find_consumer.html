@@ -1,0 +1,12 @@
+{% extends "requestdoc/base.html" %}
+{% block content %}
+
+<h2>Find Consumer by Tax No.</h2>
+<p>
+    <form method="post" name="find_customer" action="{% url 'requestdoc.views.precheck' %}">
+    {% csrf_token %}
+        <label for="tax-no"></label><input type="text" id="tax-no" name="tax-no"/><br>
+        <input type="submit" value="Search" name="search"/>
+    </form>
+</p>
+{% endblock %}

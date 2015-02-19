@@ -5,6 +5,7 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url(r'^requestdoc/login/$', 'requestdoc.views.login_view'),
+    url(r'^requestdoc/precheck/$', 'requestdoc.views.precheck'),
     url(r'^requestdoc/request/$', 'requestdoc.views.request_document_view'),
     url(r'^requestdoc/request_without_license/$', 'requestdoc.views.request_document_view_without_license'),
     url(r'^requestdoc/request_identify_good/$', 'requestdoc.views.request_identify_good'),

@@ -12,6 +12,7 @@ import random
 from django.contrib.auth.models import User
 
 import logging
+from user_detail.models import ConsumerDetail
 
 logger = logging.getLogger(__name__)
 
@@ -47,6 +48,18 @@ def logout_view(request):
 @login_required
 def request_document_view_without_license(request):
     return render(request, 'requestdoc/request_view_without_license.html', {})
+
+@login_required
+def precheck(request):
+    if request.method == 'GET':
+        if request.user.userdetail.is_officer():
+            return render(request, 'requestdoc/find_consumer.html', {})
+    else:
+        request_tax_no = request.POST.get('tax-no', None)
+        consumer = ConsumerDetail.objects.filter(tax_number=request_tax_no)[0]
+        request.session['request_user_id'] = consumer.owner.id
+
+    return redirect('requestdoc.views.request_document_view')
 
 @login_required
 def request_document_view(request):
