@@ -201,12 +201,14 @@ def request_identify_good(request):
 
 @login_required
 def list_request_document_status(request):
-    request_user, logged_in_user = get_request_user(request)
     if request.method == 'GET':
-        request_docs = RequestDoc.objects.filter(request_user=request_user)
+        if request.user.userdetail.is_officer():
+            request_docs = RequestDoc.objects.all()
+        else:
+            request_docs = RequestDoc.objects.filter(request_user=request.user)
         filtered_docs = filter(__find_matched_payin, request_docs)
         return render(request, 'requestdoc/request_document_status.html',
-                      {'items': filtered_docs, 'logged_in_user': logged_in_user})
+                      {'items': filtered_docs, 'logged_in_user': request.user})
 
 
 def __find_matched_payin(request_doc):
@@ -223,11 +225,11 @@ def request_menu(request):
 
 @login_required
 def approve_request_document(request):
-    _, logged_in_user = get_request_user(request)
+
     if request.method == 'GET':
         filtered_docs = filter(__find_matched_payin, RequestDoc.objects.all())
         return render(request, 'requestdoc/approve_request_document.html',
-                      {'items': filtered_docs, 'logged_in_user': logged_in_user})
+                      {'items': filtered_docs, 'logged_in_user': request.user})
 
     elif request.method == 'POST':
         payin_id = request.POST.get('approve_payin_id', None)
