@@ -7,7 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('requestdoc', '0004_auto_20150117_2005'),
+        ('requestdoc', '0001_initial'),
     ]
 
     operations = [
@@ -15,9 +15,11 @@ class Migration(migrations.Migration):
             name='PayIn',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('paid', models.BooleanField(default=False)),
                 ('approve', models.BooleanField(default=False)),
+                ('approved_date', models.DateTimeField(null=True, blank=True)),
+                ('barcode_location', models.TextField(max_length=200, null=True, blank=True)),
                 ('created_date', models.DateTimeField()),
-                ('approved_date', models.DateTimeField()),
                 ('request_document', models.OneToOneField(to='requestdoc.RequestDoc')),
             ],
             options={
