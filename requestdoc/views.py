@@ -29,7 +29,6 @@ def login_view(request):
             if user.is_active:
                 login(request, user)
                 logger.info("logged user=%s, is_officier=%s" % (user, user.userdetail.is_officer()))
-
                 return redirect('/requestdoc/request_menu/')
 
             else:
@@ -49,6 +48,7 @@ def logout_view(request):
 def request_document_view_without_license(request):
     return render(request, 'requestdoc/request_view_without_license.html', {})
 
+
 @login_required
 def precheck(request):
     if request.method == 'GET':
@@ -61,15 +61,21 @@ def precheck(request):
 
     return redirect('requestdoc.views.request_document_view')
 
-@login_required
-def request_document_view(request):
+
+def get_request_user(request):
     logged_in_user = request.user
-    if not logged_in_user.userdetail.is_officer():
-        request_user = logged_in_user
-    else:
+    if logged_in_user.userdetail.is_officer():
         request_user_id = request.session.get('request_user_id')
         request_user = User.objects.get(id=request_user_id)
+    else:
+        request_user = logged_in_user
+    return request_user, logged_in_user
 
+
+@login_required
+def request_document_view(request):
+
+    request_user, logged_in_user = get_request_user(request)
     context = {
         'consumer': request_user.consumerdetail_set.all()[0] if len(request_user.consumerdetail_set.all()) else None,
         'logged_in_user': logged_in_user
@@ -139,6 +145,7 @@ def complete_request_process(request):
     else:
         return HttpResponseNotFound()
 
+
 @login_required
 def request_identify_good(request):
     request_doc_id = request.session.get('request_doc_id', None)
@@ -191,12 +198,15 @@ def request_identify_good(request):
             return HttpResponseNotFound()
         return render(request, 'requestdoc/request_product_view.html', context)
 
+
 @login_required
 def list_request_document_status(request):
+    request_user, logged_in_user = get_request_user(request)
     if request.method == 'GET':
-        request_docs = RequestDoc.objects.filter(request_user=request.user)
+        request_docs = RequestDoc.objects.filter(request_user=request_user)
         filtered_docs = filter(__find_matched_payin, request_docs)
-        return render(request, 'requestdoc/request_document_status.html', {'items': filtered_docs})
+        return render(request, 'requestdoc/request_document_status.html',
+                      {'items': filtered_docs, 'logged_in_user': logged_in_user})
 
 
 def __find_matched_payin(request_doc):
@@ -207,16 +217,17 @@ def __find_matched_payin(request_doc):
 
 @login_required
 def request_menu(request):
-    context = {'user': request.user}
     if request.method == 'GET':
-        return render(request, 'requestdoc/request_menu.html', context)
+        return render(request, 'requestdoc/request_menu.html', {'logged_in_user': request.user})
 
 
 @login_required
 def approve_request_document(request):
+    _, logged_in_user = get_request_user(request)
     if request.method == 'GET':
         filtered_docs = filter(__find_matched_payin, RequestDoc.objects.all())
-        return render(request, 'requestdoc/approve_request_document.html', {'items': filtered_docs})
+        return render(request, 'requestdoc/approve_request_document.html',
+                      {'items': filtered_docs, 'logged_in_user': logged_in_user})
 
     elif request.method == 'POST':
         payin_id = request.POST.get('approve_payin_id', None)

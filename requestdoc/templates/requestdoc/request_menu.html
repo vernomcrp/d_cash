@@ -1,5 +1,6 @@
 {% extends "requestdoc/base.html" %}
 {% block content %}
+    <p>logged in as : {{ logged_in_user }}</p>
     <div>
         <h2>ประเภทคำขอ</h2>
         <a href="{% url 'requestdoc.views.precheck' %}">ยื่นคำขอตรวจปล่อยสินค้า กรณีมีใบอนุญาต</a><br>
