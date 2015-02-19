@@ -1,6 +1,6 @@
 from django.contrib import admin
 
 # Register your models here.
-#from registration.models import RequestForm
+#from register_new_consumer.models import RequestForm
 
 #admin.site.register(RequestForm)
