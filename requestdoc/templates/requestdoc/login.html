@@ -1,19 +1,42 @@
-{% extends "requestdoc/base.html" %}
+{% extends "base.html" %}
+{% block extracss %}
+    <style rel="stylesheet">
+    .container{
+        text-align: center;;
+    }
+    #sign-in{
+        max-width: 330px;
+        padding: 15px;
+        margin:0 auto;
+    }
+    </style>
+{% endblock %}
+
 {% block content %}
+    <div class="container">
+        {% if form.errors %}
+            <p>Your username and password didn't match. Please try again.</p>
+        {% endif %}
 
-{% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
-{% endif %}
-ลงชื่อเข้าใช้ระบบ
-<form method="post" action="{% url 'requestdoc.views.login_view' %}">
-{% csrf_token %}
-<table>
-    <tr><td>Username</td><td><input type="text" id="username" name="username"/></td></tr>
-    <tr><td>Password</td><td><input type="password" id="password" name="password"/></td></tr>
-</table>
-
-<input type="submit" value="login" />
-<input type="hidden" name="next" value="{{ next }}" />
-</form>
-
+        <form method="post" action="{% url 'requestdoc.views.login_view' %}" id="sign-in">
+            <h2>ลงชื่อเข้าใช้ระบบ</h2>
+            {% csrf_token %}
+            <div>
+{#                <label for="username">Username</label>#}
+                <input type="text" id="username" name="username" class="form-control" placeholder="ชื่อผู้ใช้" required autofocus/>
+{#                <label for="password">Password</label>#}
+                <input type="password" id="password" name="password" class="form-control" placeholder="รหัสผ่าน" required/>
+                <br>
+                <button type="button" class="btn btn-primary btn-block">Login</button>
+                <input type="hidden" name="next" value="{{ next }}"/>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+{% block extrajs %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            console.log('hello world');
+        });
+    </script>
 {% endblock %}

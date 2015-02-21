@@ -52,6 +52,12 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+   # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
+)
+
 ROOT_URLCONF = 'd_cash.urls'
 
 WSGI_APPLICATION = 'd_cash.wsgi.application'
@@ -78,11 +84,32 @@ USE_I18N = True
 
 USE_L10N = True
 
-#USE_TZ = True
-USE_TZ = False
+USE_TZ = True
+# USE_TZ = False
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'django.core.context_processors.tz',
+    'django.contrib.messages.context_processors.messages',
+)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
-# STATIC_ROOT = '/home/vernom/d_cash/static'
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(STATIC_ROOT, 'bootstrap'),
+)
+
+TEMPLATE_PATH = os.path.join(BASE_DIR, 'templates')
+TEMPLATE_DIRS = (
+    TEMPLATE_PATH,
+)
+
+
+

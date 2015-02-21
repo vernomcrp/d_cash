@@ -1,8 +1,11 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
-urlpatterns = patterns('',
+from d_cash import settings
+from django.conf.urls.static import static
 
+urlpatterns = patterns('',
+    # url(r'^$', TemplateView.as_view(template_name='base.html')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^requestdoc/login/$', 'requestdoc.views.login_view'),
     url(r'^requestdoc/precheck/$', 'requestdoc.views.precheck'),
@@ -17,3 +20,4 @@ urlpatterns = patterns('',
     url(r'^register_new_consumer/new_user/$', 'register_new_consumer.views.registration_page')
 
 )
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
