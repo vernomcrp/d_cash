@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <p>logged in as : {{ logged_in_user }}</p>
-    <p> สถานะหนังสือตรวจปล่อย </p>
+    <div style="height:50px;">
+        <a class="navbar-brand" href="#">logged in as : {{ logged_in_user }}</a>
+    </div>
+    <div class="container">
+    <h3> สถานะหนังสือตรวจปล่อย </h3>
     <p>
-        <table>
+        <table class="table table-bordered">
             <tr><th>เลขหนังสือตรวจปล่อย</th><th>ยื่นคำขอวันที่</th><th>สถานะ</th><th></th></tr>
             {% for item in items %}
 
@@ -42,4 +45,5 @@
             {% endfor %}
         </table>
     </p>
+    </div>
 {% endblock %}

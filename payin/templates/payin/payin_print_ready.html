@@ -1,23 +1,54 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>PayIn Bill Payment</title>
-</head>
-<body>
-    <h1>ใบนำฝากชำระเงินค่าสินค้าและบริการ</h1>
-    <div>สำหรับลูกค้า</div>
-    <div id="company-detail">
-        <div>Consumer Name : {{ detail.company_name }}</div>
-        <div>Consumer Address : {{ detail.address }}</div>
-        <div>Consumer Tax No. : {{ detail.tax_number }}</div>
-    </div>
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container">
+        <h1>ใบนำฝากชำระเงินค่าสินค้าและบริการ</h1>
 
-    <h1>สำหรับเจ้าหน้าที่ธนาคาร</h1>
-    <div id="company-detail">
-        <div>Consumer Name : {{ detail.company_name }}</div>
-        <div>Consumer Address : {{ detail.address }}</div>
-        <div>Consumer Tax No. : {{ detail.tax_number }}</div>
+        {#        <p><strong>สำหรับลูกค้า</strong></p>#}
+        {##}
+        {#        <p>#}
+        {##}
+        {#        <div id="company-detail">#}
+        {#            <div>Consumer Name : {{ detail.company_name }}</div>#}
+        {#            <div>Consumer Address : {{ detail.address }}</div>#}
+        {#            <div>Consumer Tax No. : {{ detail.tax_number }}</div>#}
+        {#        </div>#}
+        {#        </p>#}
+        {##}
+        {#        <p><strong>สำหรับเจ้าหน้าที่ธนาคาร</strong></p>#}
+        {##}
+        {#        <p>#}
+        {##}
+        {#        <div id="company-detail">#}
+        {#            <div>Consumer Name : {{ detail.company_name }}</div>#}
+        {#            <div>Consumer Address : {{ detail.address }}</div>#}
+        {#            <div>Consumer Tax No. : {{ detail.tax_number }}</div>#}
+        {#        </div>#}
+        {#        </p>#}
+        {##}
+        {#        <p>#}
+        {#            <img src="{{ STATIC_URL }}test_svg.svg">#}
+        {#        </p>#}
+        <div class="panel panel-default">
+            <div class="panel-heading"><strong>สำหรับลูกค้า</strong></div>
+            <div class="panel-body">
+                <div>Consumer Name : {{ detail.company_name }}</div>
+                <div>Consumer Address : {{ detail.address }}</div>
+                <div>Consumer Tax No. : {{ detail.tax_number }}</div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading"><strong>สำหรับเจ้าหน้าที่ธนาคาร</strong></div>
+            <div class="panel-body">
+                <div>Consumer Name : {{ detail.company_name }}</div>
+                <div>Consumer Address : {{ detail.address }}</div>
+                <div>Consumer Tax No. : {{ detail.tax_number }}</div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading"><strong>Barcode</strong></div>
+            <div class="panel-body">
+                <img src="{{ STATIC_URL }}test_svg.svg">
+            </div>
+        </div>
     </div>
-    <div><img src="{{ STATIC_URL }}test_svg.svg"></div>
-</html>
+{% endblock %}

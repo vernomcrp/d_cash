@@ -2,28 +2,69 @@
 {% block extracss %}
     <style rel="stylesheet">
         #register-new-user {
-            max-width: 330px;
+            max-width: 540px;
             padding: 15px;
         {#            margin:0 auto;#}
         }
     </style>
 {% endblock %}
 {% block content %}
+    <div style="height:50px;">
+        <a class="navbar-brand" href="#">logged in as : {{ logged_in_user }}</a>
+    </div>
     <div class="container">
-        <p>Logged In as {{ logged_in_user }}</p>
-        <h1>Registration form</h1>
-        <p>
-        <form name="new-user" method="post" id="register-new-user">
-            {% csrf_token %}
-            <label>Username : </label><input type="text" name="username" class="form-control"/><br>
-            <label>Password : </label><input type="password" name="password" class="form-control"/><br>
-            <label>Email : </label><input type="email" name="email" class="form-control"/><br>
+        <h2>Registration form</h2>
 
-            <label>Consumer Name : </label><input type="text" name="consumer_name" class="form-control"/><br>
-            <label>Address : </label><textarea name="address" class="form-control"></textarea><br>
-            <label>Tax Number : </label><input type="text" name="tax_number" class="form-control"/><br>
-            <input type="submit" value="Save" class="btn btn-primary"/>
+        <form name="new-user" method="post" id="register-new-user" class="form-horizontal">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="username" class="col-sm-4 control-label">Username : </label>
+
+                <div class="col-sm-8">
+                    <input type="text" id="username" name="username" class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password" class="col-sm-4 control-label">Password : </label>
+
+                <div class="col-sm-8">
+                    <input type="password" id="password" name="password" class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email" class="col-sm-4 control-label">Email : </label>
+
+                <div class="col-sm-8">
+                    <input type="email" id="email" name="email" class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="consumer_name" class="col-sm-4 control-label">Consumer Name : </label>
+
+                <div class="col-sm-8">
+                    <input type="text" id="consumer_name" name="consumer_name" class="form-control"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="address" class="col-sm-4 control-label">Address : </label>
+
+                <div class="col-sm-8">
+                    <textarea name="address" id="address" class="form-control"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="tax_number" class="control-label col-sm-4">Tax Number : </label>
+
+                <div class="col-sm-8">
+                    <input type="text" id="tax_number" name="tax_number" class="form-control"/>
+                </div>
+
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
         </form>
-        </p>
     </div>
 {% endblock %}

@@ -1,14 +1,15 @@
 {% extends "base.html" %}
 {% block extracss %}
     <style rel="stylesheet">
-    .container{
-        text-align: center;;
-    }
-    #sign-in{
-        max-width: 330px;
-        padding: 15px;
-        margin:0 auto;
-    }
+        .container {
+            text-align: center;;
+        }
+
+        #sign-in {
+            max-width: 330px;
+            padding: 15px;
+            margin: 0 auto;
+        }
     </style>
 {% endblock %}
 
@@ -18,16 +19,27 @@
             <p>Your username and password didn't match. Please try again.</p>
         {% endif %}
 
-        <form method="post" action="{% url 'requestdoc.views.login_view' %}" id="sign-in">
-            <h2>ลงชื่อเข้าใช้ระบบ</h2>
+        <h2>ลงชื่อเข้าใช้ระบบ</h2>
+        <form method="post" action="{% url 'requestdoc.views.login_view' %}" id="sign-in" class="form-horizontal">
             {% csrf_token %}
-            <div>
-{#                <label for="username">Username</label>#}
-                <input type="text" id="username" name="username" class="form-control" placeholder="ชื่อผู้ใช้" required autofocus/>
-{#                <label for="password">Password</label>#}
-                <input type="password" id="password" name="password" class="form-control" placeholder="รหัสผ่าน" required/>
-                <br>
-                <button type="submit" class="btn btn-primary btn-block">Login</button>
+            <div class="form-group">
+                <label for="username" class="col-sm-4 control-label">Username</label>
+
+                <div class="col-sm-8">
+                    <input type="text" id="username" name="username" class="form-control" placeholder="ชื่อผู้ใช้"
+                           required autofocus/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password" class="col-sm-4 control-label">Password</label>
+
+                <div class="col-sm-8">
+                    <input type="password" id="password" name="password" class="form-control" placeholder="รหัสผ่าน"
+                           required/>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Login</button>
                 <input type="hidden" name="next" value="{{ next }}"/>
             </div>
         </form>
@@ -36,7 +48,7 @@
 {% block extrajs %}
     <script type="text/javascript">
         $(document).ready(function () {
-{#            console.log('hello world');#}
+            {#            console.log('hello world');#}
         });
     </script>
 {% endblock %}

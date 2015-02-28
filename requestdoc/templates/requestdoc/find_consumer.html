@@ -5,7 +5,7 @@
         #find-customer {
             max-width: 450px;
             padding: 15px;
-{#                    margin:0 auto;#}
+            margin:0 auto;
         }
     </style>
 {% endblock %}
@@ -15,12 +15,14 @@
         <a class="navbar-brand" href="#">logged in as : {{ logged_in_user }}</a>
     </div>
     <div class="container">
-        <h2>Find Consumer by Tax No.</h2>
 
 
+        <div class="text-center">
+            <h2>Find Consumer by Tax No.</h2>
+        </div>
         <form method="post" name="find_customer" id="find-customer" action="{% url 'requestdoc.views.precheck' %}"
               class="form-horizontal">
-            {% csrf_token %}
+                {% csrf_token %}
             <div class="form-group">
                 <label for="tax-no" class="col-sm-4 control-label">Tax Number</label>
                 <div class="col-sm-8">
