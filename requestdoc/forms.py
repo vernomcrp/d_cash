@@ -3,7 +3,7 @@ from django import forms
 
 class InvoiceForm(forms.Form):
     invoice_no = forms.CharField(max_length=50, label='Invoice No.')
-    invoice_date = forms.DateField(label="Invoice Date (YYYY-MM-DD")
+    invoice_date = forms.DateField(label="Invoice Date")
     invoice_file = forms.FileField(required=False, label='Input File')
     location_x = forms.CharField(max_length=10, label='Location X')
     location_y = forms.CharField(max_length=10, label='Location Y')

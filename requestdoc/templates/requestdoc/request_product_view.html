@@ -1,52 +1,116 @@
 {% extends "base.html" %}
-
+{% block extracss %}
+    <style rel="stylesheet">
+        #post-good-form {
+            max-width: 450px;
+            padding: 15px;
+        {#                    margin:0 auto;#}
+        }
+    </style>
+{% endblock %}
 {% block content %}
+    <div style="height:50px;">
+        <a class="navbar-brand" href="#">logged in as : {{ logged_in_user }}</a>
+    </div>
+    <div class="container">
+        <h1>คำขอหนังสือตรวจปล่อย</h1>
 
-    <h1>คำขอหนังสือตรวจปล่อย</h1>
-    <p>logged in as : {{ logged_in_user }}</p>
-    <div>
-        <div><h2>เลขหนังสือปล่อย</h2></div>
+
         <div>
-            เลขที่ {{ request_doc.request_doc_number }}*
+            <div><h2>เลขหนังสือปล่อย</h2></div>
+            <div> เลขที่ {{ request_doc.request_doc_number }}*</div>
+        </div>
+
+        <div>
+            <div><h2>Good's Detail</h2></div>
+            {#            <form method="post" action="{% url 'requestdoc.views.request_identify_good' %}" id="post-good-form">#}
+            {#                {% csrf_token %}#}
+            {#                {{ form.as_p }}#}
+            {#                <input type="submit" value="Save" class="btn btn-primary"/>#}
+            {#                <input type="button" value="Cancel" class="btn btn-cancel"/>#}
+            {#            </form>#}
+            <form method="post" action="{% url 'requestdoc.views.request_identify_good' %}" id="post-good-form"
+                  class="form-horizontal">
+                {% csrf_token %}
+
+                {% for field in form %}
+                    {% if field.errors %}
+                        <div class="form-group error">
+                            <label class="col-sm-4 control-label">{{ field.label }}</label>
+
+                            <div class="col-sm-8">{{ field }}
+                                    <span class="help-inline">
+                                        {% for error in  field.errors %}{{ error }}{% endfor %}
+                                    </span>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">{{ field.label }}</label>
+
+                            <div class="col-sm-8">{{ field }}
+                                {% if field.help_text %}
+                                    <p class="help-inline">
+                                        <small>{{ field.help_text }}</small>
+                                    </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button class="btn btn-cancel">Cancel</button>
+                </div>
+            </form>
+        </div>
+        <div>
+            <table class="table table-bordered table-hover">
+                <tr>
+                    <td>ลำดับที่</td>
+                    <td>ผลิตภัณฑ์</td>
+                    <td>มอกเลขที่</td>
+                    <td>ใบอนุญาตเลขที่</td>
+                    <td>จำนวน(หน่วย)</td>
+                    <td>แก้ไข</td>
+                    <td>ลบ</td>
+                </tr>
+                {% if products %}
+                    {% for product in products %}
+                        <tr>
+                            <td></td>
+                            <td>{{ product.product_name }}</td>
+                            <td>{{ product.standard_industrial_no }}</td>
+                            <td>{{ product.license_no }}</td>
+                            <td>{{ product.quantity }} x {{ product.unit }} </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+
+                    {% endfor %}
+                {% endif %}
+            </table>
+        </div>
+        <div>
+            <form method="post" action="{% url 'requestdoc.views.complete_request_process' %}">
+                {% csrf_token %}
+                <input type="submit" value="Send Request to Officer" class="btn btn-primary"/>
+                <input type="hidden" name="request_doc_no" value="{{ request_doc.request_doc_number }}"/>
+            </form>
         </div>
     </div>
+{% endblock %}
+{% block extrajs %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#post-good-form :input').each(function () {
+                var eltype = $(this).prop('type');
+                if (eltype == 'text' || eltype == 'number') {
+                    $(this).addClass('form-control');
+                }
+            });
 
-    <div>
-        <div><h2>Good's Detail</h2></div>
-        <form method="post" action="{% url 'requestdoc.views.request_identify_good' %}">
-            {%  csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="Save" />
-            <input type="button" value="Cancel" />
-        </form>
-    </div>
-    <div>
-        <table>
-        <tr>
-            <td>ลำดับที่</td><td>ผลิตภัณฑ์</td><td>มอกเลขที่</td><td>ใบอนุญาตเลขที่</td><td>จำนวน(หน่วย)</td><td>แก้ไข</td><td>ลบ</td>
-        </tr>
-        {% if products %}
-            {% for product in products %}
-                <tr>
-                    <td></td>
-                    <td>{{ product.product_name }}</td>
-                    <td>{{ product.standard_industrial_no  }}</td>
-                    <td>{{ product.license_no }}</td>
-                    <td>{{ product.quantity }} x {{ product.unit }} </td>
-                    <td></td>
-                    <td></td>
-                </tr>
-
-            {% endfor %}
-        {% endif %}
-        </table>
-    </div>
-    <div>
-        <form method="post" action="{% url 'requestdoc.views.complete_request_process' %}">
-            {%  csrf_token %}
-            <input type="submit" value="Send Request to Officer" />
-            <input type="hidden" name="request_doc_no" value="{{ request_doc.request_doc_number }}" />
-        </form>
-    </div>
-
+        });
+    </script>
 {% endblock %}

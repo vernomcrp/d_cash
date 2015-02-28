@@ -1,18 +1,29 @@
-{% extends "requestdoc/../../../static/../../../templates/base.html" %}
+{% extends "base.html" %}
+{% block extracss %}
+    <style rel="stylesheet">
+        #register-new-user {
+            max-width: 330px;
+            padding: 15px;
+        {#            margin:0 auto;#}
+        }
+    </style>
+{% endblock %}
 {% block content %}
-    <p>Logged In as {{ logged_in_user }}</p>
-    <h1>Registration form</h1>
-    <p>
-    <form name="new-user" method="post">
-        {% csrf_token %}
-        <label>Username : </label><input type="text" name="username" /><br>
-        <label>Password : </label><input type="password" name="password" /><br>
-        <label>Email : </label><input type="email" name="email" /><br>
+    <div class="container">
+        <p>Logged In as {{ logged_in_user }}</p>
+        <h1>Registration form</h1>
+        <p>
+        <form name="new-user" method="post" id="register-new-user">
+            {% csrf_token %}
+            <label>Username : </label><input type="text" name="username" class="form-control"/><br>
+            <label>Password : </label><input type="password" name="password" class="form-control"/><br>
+            <label>Email : </label><input type="email" name="email" class="form-control"/><br>
 
-        <label>Consumer Name : </label><input type="text" name="consumer_name" /><br>
-        <label>Address : </label><textarea name="address" ></textarea><br>
-        <label>Tax Number : </label><input type="text" name="tax_number" /><br>
-        <input type="submit" value="Save" />
-    </form>
-    </p>
+            <label>Consumer Name : </label><input type="text" name="consumer_name" class="form-control"/><br>
+            <label>Address : </label><textarea name="address" class="form-control"></textarea><br>
+            <label>Tax Number : </label><input type="text" name="tax_number" class="form-control"/><br>
+            <input type="submit" value="Save" class="btn btn-primary"/>
+        </form>
+        </p>
+    </div>
 {% endblock %}

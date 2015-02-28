@@ -53,7 +53,7 @@ def request_document_view_without_license(request):
 def precheck(request):
     if request.method == 'GET':
         if request.user.userdetail.is_officer():
-            return render(request, 'requestdoc/find_consumer.html', {})
+            return render(request, 'requestdoc/find_consumer.html', {'logged_in_user': request.user})
     else:
         request_tax_no = request.POST.get('tax-no', None)
         consumer = ConsumerDetail.objects.filter(tax_number=request_tax_no)[0]

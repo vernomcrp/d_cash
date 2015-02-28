@@ -1,27 +1,95 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block extracss %}
+    <style rel="stylesheet">
+        #request-form-1 {
+            max-width: 540px;
+            padding: 15px;
+        }
+    </style>
+{% endblock %}
 
-    <h1>คำขอหนังสือตรวจปล่อย</h1>
-    <p>logged in as : {{ logged_in_user }}</p>
-    <div>
-        <div><h2>ข้อมูลผู้ร้องขอ</h2></div>
+{% block content %}
+    <div style="height:50px;">
+        <a class="navbar-brand" href="#">logged in as : {{ logged_in_user }}</a>
+    </div>
+    <div class="container">
+        <h1>คำขอหนังสือตรวจปล่อย</h1>
+
+
         <div>
-            <div>Requester Name : {{ consumer.consumer_name }}</div>
-            <div>Requester Address : {{ consumer.address }}</div>
-            <div>Tax No. : {{ consumer.tax_number }}</div>
+            <div><h2>ข้อมูลผู้ร้องขอ</h2></div>
+            <div>
+                <div>Requester Name : {{ consumer.consumer_name }}</div>
+                <div>Requester Address : {{ consumer.address }}</div>
+                <div>Tax No. : {{ consumer.tax_number }}</div>
+            </div>
+        </div>
+
+        <div>
+            <div><h2>Request's Detail</h2></div>
+{#            <form method="post" action="{% url 'requestdoc.views.request_document_view' %}"#}
+{#                  enctype="multipart/form-data" id="request-form-1">#}
+{#                {% csrf_token %}#}
+{##}
+{#                {{ form.as_p }}#}
+{#                <input type="submit" value="Save" class="btn btn-primary"/>#}
+{#                <input type="button" value="Cancel" class="btn btn-cancel"/>#}
+{#            </form>#}
+
+            <form method="post" action="{% url 'requestdoc.views.request_document_view' %}"
+                  enctype="multipart/form-data" id="request-form-1" class="form-horizontal">
+                {% csrf_token %}
+
+                {% for field in form %}
+                    {% if field.errors %}
+                        <div class="form-group error">
+                            <label class="col-sm-4 control-label">{{ field.label }}</label>
+
+                            <div class="col-sm-8">{{ field }}
+                                    <span class="help-inline">
+                                        {% for error in  field.errors %}{{ error }}{% endfor %}
+                                    </span>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">{{ field.label }}</label>
+
+                            <div class="col-sm-8">{{ field }}
+                                {% if field.help_text %}
+                                    <p class="help-inline">
+                                        <small>{{ field.help_text }}</small>
+                                    </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <input type="button" value="Cancel" class="btn btn-cancel"/>
+                </div>
+
+            </form>
+
         </div>
     </div>
 
-    <div>
-        <div><h2>Request's Detail</h2></div>
-    <form method="post" action="{% url 'requestdoc.views.request_document_view' %}" enctype="multipart/form-data">
-        {%  csrf_token %}
+{% endblock %}
+{% block extrajs %}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#request-form-1 :input').each(function () {
+                if ($(this).prop('type') == 'text') {
+                    $(this).addClass('form-control');
+                }
+                if ($(this).prop('id') == 'id_invoice_date') {
+                    $(this).attr('placeholder', 'YYYY-MM-DD');
+                }
+            });
 
-        {{ form.as_p }}
-        <input type="submit" value="Save" />
-        <input type="button" value="Cancel" />
-    </form>
-    </div>
-
+        });
+    </script>
 {% endblock %}

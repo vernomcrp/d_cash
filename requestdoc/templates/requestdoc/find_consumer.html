@@ -1,14 +1,35 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block extracss %}
+    <style rel="stylesheet">
+        #find-customer {
+            max-width: 450px;
+            padding: 15px;
+{#                    margin:0 auto;#}
+        }
+    </style>
+{% endblock %}
 
-<h2>Find Consumer by Tax No.</h2>
-<p>
-    <form method="post" name="find_customer" action="{% url 'requestdoc.views.precheck' %}">
-    {% csrf_token %}
-        <label for="tax-no"></label><input type="text" id="tax-no" name="tax-no"/><br>
-        <input type="submit" value="Search" name="search"/>
-    </form>
-    <a href="{% url 'register_new_consumer.views.registration_page' %}">Register New Consumer</a>
-</p>
+{% block content %}
+    <div style="height:50px;">
+        <a class="navbar-brand" href="#">logged in as : {{ logged_in_user }}</a>
+    </div>
+    <div class="container">
+        <h2>Find Consumer by Tax No.</h2>
+
+
+        <form method="post" name="find_customer" id="find-customer" action="{% url 'requestdoc.views.precheck' %}"
+              class="form-horizontal">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="tax-no" class="col-sm-4 control-label">Tax Number</label>
+                <div class="col-sm-8">
+                    <input type="text" id="tax-no" name="tax-no" class="form-control"
+                           placeholder="Tax Number"/><br>
+                    <button type="submit" value="Search" class="btn btn-primary">Search</button>
+                    <a href="{% url 'register_new_consumer.views.registration_page' %}">Register New Consumer</a>
+                </div>
+            </div>
+            </form>
+    </div>
 {% endblock %}
