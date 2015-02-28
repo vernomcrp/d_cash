@@ -10,6 +10,7 @@ from requestdoc.models import Invoice, RequestDoc, Product
 from datetime import datetime
 import random
 from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 
 import logging
 from user_detail.models import ConsumerDetail
@@ -56,7 +57,8 @@ def precheck(request):
             return render(request, 'requestdoc/find_consumer.html', {'logged_in_user': request.user})
     else:
         request_tax_no = request.POST.get('tax-no', None)
-        consumer = ConsumerDetail.objects.filter(tax_number=request_tax_no)[0]
+        # consumer = ConsumerDetail.objects.get(tax_number=request_tax_no)
+        consumer = get_object_or_404(ConsumerDetail, tax_number=request_tax_no)
         request.session['request_user_id'] = consumer.owner.id
 
     return redirect('requestdoc.views.request_document_view')
