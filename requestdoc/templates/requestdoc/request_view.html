@@ -39,7 +39,7 @@
 
             <form method="post" action="{% url 'requestdoc.views.request_document_view' %}"
                   enctype="multipart/form-data" id="request-form-1" class="form-horizontal">
-                {% csrf_token %}
+{#                {% csrf_token %}#}
 
                 {% for field in form %}
                     {% if field.errors %}

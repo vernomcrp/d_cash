@@ -32,7 +32,7 @@
                                         method='POST'
                                         name="approve_request_doc_{{ item.payin.id }}"
                                         action="{% url 'requestdoc.views.approve_request_document' %}">
-                                    {%  csrf_token %}
+{#                                    {%  csrf_token %}#}
                                     <input type="hidden" name="approve_payin_id" id="approve_payin_id" value="{{ item.payin.id }}"/>
                                     <input type="submit" value="Approve"/>
                                 </form>

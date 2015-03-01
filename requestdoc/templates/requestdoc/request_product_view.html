@@ -31,7 +31,7 @@
             {#            </form>#}
             <form method="post" action="{% url 'requestdoc.views.request_identify_good' %}" id="post-good-form"
                   class="form-horizontal">
-                {% csrf_token %}
+{#                {% csrf_token %}#}
 
                 {% for field in form %}
                     {% if field.errors %}
@@ -94,7 +94,7 @@
         </div>
         <div>
             <form method="post" action="{% url 'requestdoc.views.complete_request_process' %}">
-                {% csrf_token %}
+{#                {% csrf_token %}#}
                 <input type="submit" value="Send Request to Officer" class="btn btn-primary"/>
                 <input type="hidden" name="request_doc_no" value="{{ request_doc.request_doc_number }}"/>
             </form>
