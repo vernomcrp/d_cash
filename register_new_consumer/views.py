@@ -38,7 +38,7 @@ def registration_page(request):
         if len(ConsumerDetail.objects.filter(tax_number=tax_number)) > 0:
             error['tax_no'] = 'Tax No %s is valid' % tax_number
 
-        if None in error.values():
+        if None not in error.values():
             return render(
                 request, 'registration/registration_page.html',
                 {'logged_in_user': request.user, 'error': error}
