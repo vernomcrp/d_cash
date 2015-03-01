@@ -12,8 +12,8 @@ import random
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 
-import logging
 from user_detail.models import ConsumerDetail
+import logging
 
 logger = logging.getLogger(__name__)
 
