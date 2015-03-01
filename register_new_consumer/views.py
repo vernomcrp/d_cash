@@ -11,12 +11,18 @@ logger = logging.getLogger(__name__)
 
 
 def registration_page(request):
+    print 'getting method ---> i', request.method
     if request.method == 'GET':
         # Create user form
-        return render(
-            request, 'registration/registration_page.html',
-            {'logged_in_user': request.user}
-        )
+        if request.user.is_authenticated():
+            return render(
+                request, 'registration/registration_page.html',
+                {'logged_in_user': request.user}
+            )
+        else:
+            return render(
+                request, 'registration/registration_page.html'
+            )
     elif request.method == 'POST':
         data = request.POST
         username = data.get('username', None)
