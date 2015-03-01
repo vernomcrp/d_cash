@@ -13,7 +13,6 @@ logger = logging.getLogger(__name__)
 def registration_page(request):
     if request.method == 'GET':
         # Create user form
-        print request
         return render(
             request, 'registration/registration_page.html',
             {'logged_in_user': request.user}

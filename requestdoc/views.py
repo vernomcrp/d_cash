@@ -44,7 +44,8 @@ def login_view(request):
 def logout_view(request):
     logging_out_user = request.user.username
     logout(request)
-    return render(request, 'requestdoc/logout_page.html', {'logging_out_user': logging_out_user})
+    # return render(request, 'requestdoc/logout_page.html', {'logging_out_user': logging_out_user})
+    return redirect('requestdoc.views.login_view')
 
 
 @login_required(login_url='/requestdoc/login')
