@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}
+    ผู้ใช้งาน {{ logging_out_user }} ได้ทำการออกจากระบบเรียบร้อยแล้ว
+    <a href="{% url 'requestdoc.views.login_view' %}">กลับไปหน้า login</a>
+{% endblock %}

@@ -42,23 +42,32 @@ def login_view(request):
 
 
 def logout_view(request):
+    logging_out_user = request.user.username
     logout(request)
+    return render(request, 'requestdoc/logout_page.html', {'logging_out_user': logging_out_user})
 
 
-@login_required
+@login_required(login_url='/requestdoc/login')
 def request_document_view_without_license(request):
     return render(request, 'requestdoc/request_view_without_license.html', {})
 
 
-@login_required
+@login_required(login_url='/requestdoc/login')
 def precheck(request):
     if request.method == 'GET':
         if request.user.userdetail.is_officer():
             return render(request, 'requestdoc/find_consumer.html', {'logged_in_user': request.user})
     else:
         request_tax_no = request.POST.get('tax-no', None)
-        # consumer = ConsumerDetail.objects.get(tax_number=request_tax_no)
-        consumer = get_object_or_404(ConsumerDetail, tax_number=request_tax_no)
+
+        try:
+            consumer = ConsumerDetail.objects.get(tax_number=request_tax_no)
+        except ConsumerDetail.DoesNotExist:
+            return render(request, 'requestdoc/find_consumer.html', {
+                'logged_in_user': request.user,
+                'error': 'Consumer with TaxNo %s is invalid' % request_tax_no
+            })
+
         request.session['request_user_id'] = consumer.owner.id
 
     return redirect('requestdoc.views.request_document_view')
@@ -74,9 +83,8 @@ def get_request_user(request):
     return request_user, logged_in_user
 
 
-@login_required
+@login_required(login_url='/requestdoc/login')
 def request_document_view(request):
-
     request_user, logged_in_user = get_request_user(request)
     context = {
         'consumer': request_user.consumerdetail_set.all()[0] if len(request_user.consumerdetail_set.all()) else None,
@@ -128,7 +136,7 @@ def get_current_time():
     return datetime.today()
 
 
-@login_required
+@login_required(login_url='/requestdoc/login')
 def complete_request_process(request):
     context = {}
 
@@ -148,7 +156,7 @@ def complete_request_process(request):
         return HttpResponseNotFound()
 
 
-@login_required
+@login_required(login_url='/requestdoc/login')
 def request_identify_good(request):
     request_doc_id = request.session.get('request_doc_id', None)
     invoice_id = request.session.get('invoice_id', None)
@@ -201,7 +209,7 @@ def request_identify_good(request):
         return render(request, 'requestdoc/request_product_view.html', context)
 
 
-@login_required
+@login_required(login_url='/requestdoc/login')
 def list_request_document_status(request):
     if request.method == 'GET':
         if request.user.userdetail.is_officer():
@@ -219,15 +227,14 @@ def __find_matched_payin(request_doc):
     return True if len(payins) else False
 
 
-@login_required
+@login_required(login_url='/requestdoc/login')
 def request_menu(request):
     if request.method == 'GET':
         return render(request, 'requestdoc/request_menu.html', {'logged_in_user': request.user})
 
 
-@login_required
+@login_required(login_url='/requestdoc/login')
 def approve_request_document(request):
-
     if request.method == 'GET':
         filtered_docs = filter(__find_matched_payin, RequestDoc.objects.all())
         return render(request, 'requestdoc/approve_request_document.html',

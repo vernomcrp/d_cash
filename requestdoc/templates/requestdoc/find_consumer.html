@@ -5,7 +5,7 @@
         #find-customer {
             max-width: 450px;
             padding: 15px;
-            margin:0 auto;
+            margin: 0 auto;
         }
     </style>
 {% endblock %}
@@ -22,16 +22,31 @@
         </div>
         <form method="post" name="find_customer" id="find-customer" action="{% url 'requestdoc.views.precheck' %}"
               class="form-horizontal">
-                {% csrf_token %}
+            {% csrf_token %}
             <div class="form-group">
                 <label for="tax-no" class="col-sm-4 control-label">Tax Number</label>
+
                 <div class="col-sm-8">
                     <input type="text" id="tax-no" name="tax-no" class="form-control"
-                           placeholder="Tax Number"/><br>
-                    <button type="submit" value="Search" class="btn btn-primary">Search</button>
-                    <a href="{% url 'register_new_consumer.views.registration_page' %}">Register New Consumer</a>
+                           placeholder="Tax Number"/>
+                    {% if error %}
+                        <span class="label label-danger">{{ error }}</span>
+                    {% endif %}
+
                 </div>
             </div>
-            </form>
+            <div class="form-actions text-center">
+                <button type="submit" value="Search" class="btn btn-primary">Search</button>
+                <a href="{% url 'register_new_consumer.views.registration_page' %}">Register New Consumer</a>
+            </div>
+        </form>
+
     </div>
+{% endblock %}
+{% block extrajs %}
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#tax-no').focus();
+        });
+    </script>
 {% endblock %}

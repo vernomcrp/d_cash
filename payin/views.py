@@ -9,7 +9,7 @@ from requestdoc.models import RequestDoc
 from d_cash.settings import STATIC_ROOT
 
 
-@login_required
+@login_required(login_url='/requestdoc/login')
 def display_payin(request, request_doc_id):
     if request.method == 'GET':
         if request.user.userdetail.is_officer():

@@ -20,6 +20,7 @@
         {% endif %}
 
         <h2>ลงชื่อเข้าใช้ระบบ</h2>
+
         <form method="post" action="{% url 'requestdoc.views.login_view' %}" id="sign-in" class="form-horizontal">
             {% csrf_token %}
             <div class="form-group">
@@ -43,12 +44,9 @@
                 <input type="hidden" name="next" value="{{ next }}"/>
             </div>
         </form>
+        <a href="{% url 'register_new_consumer.views.registration_page' %}">Register New Consumer</a>
+
     </div>
 {% endblock %}
 {% block extrajs %}
-    <script type="text/javascript">
-        $(document).ready(function () {
-            {#            console.log('hello world');#}
-        });
-    </script>
 {% endblock %}
