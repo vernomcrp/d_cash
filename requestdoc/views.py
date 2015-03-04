@@ -280,7 +280,7 @@ def approve_request_document(request):
 def final_approve_document(request):
     if request.method == 'GET':
         filtered_docs = filter(__find_matched_payin, RequestDoc.objects.all())
-        return render(request, 'requestdoc/approve_request_document.html',
+        return render(request, 'requestdoc/final_approve_request_document.html',
                       {'items': filtered_docs, 'logged_in_user': request.user})
 
     elif request.method == 'POST':
