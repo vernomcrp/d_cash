@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4 alert alert-warning text-center">
+        <strong>{{ error.topic }}</strong>
+        {{ error.detail }}
+        <a href="{% url 'requestdoc.views.login_view' %}" class="alert-link">Goback to Login Page</a>
+    </div>
+{% endblock %}

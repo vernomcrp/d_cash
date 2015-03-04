@@ -9,16 +9,19 @@
     </style>
 {% endblock %}
 {% block content %}
-    <div style="height:50px;">
+    <div style="height:50px; margin-left: 10px;">
         {% if logged_in_user %}
-            <a class="navbar-brand" href="#">logged in as : {{ logged_in_user }}</a>
+            <div class="btn-group">
+                <a class="btn btn-primary active" href="#">logged in as : {{ logged_in_user }}</a>
+                <a class="btn btn-warning" href="{% url 'requestdoc.views.logout_view' %}" role="button">logout</a>
+            </div>
         {% endif %}
     </div>
     <div class="container">
         <h2>Registration form</h2>
 
         <form name="new-user" method="post" id="register-new-user" class="form-horizontal">
-{#            {% csrf_token %}#}
+            {#            {% csrf_token %}#}
             <div class="form-group">
                 <label for="username" class="col-sm-4 control-label">Username : </label>
 
@@ -63,7 +66,7 @@
 
                 <div class="col-sm-8">
                     <input type="text" id="tax_number" name="tax_number" class="form-control"/>
-                    {% if error.tax_no%} <span class="label label-danger"> {{ error.tax_no }} </span> {% endif %}
+                    {% if error.tax_no %} <span class="label label-danger"> {{ error.tax_no }} </span> {% endif %}
                 </div>
 
             </div>

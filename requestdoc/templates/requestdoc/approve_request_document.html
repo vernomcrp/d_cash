@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div style="height:50px;">
-        <a class="navbar-brand" href="#">logged in as : {{ logged_in_user }}</a>
+    <div style="height:50px; margin-left: 10px;">
+        <div class="btn-group">
+            <a class="btn btn-primary active" href="#">logged in as : {{ logged_in_user }}</a>
+            <a class="btn btn-warning" href="{% url 'requestdoc.views.logout_view' %}" role="button">logout</a>
+        </div>
     </div>
     <div class="container">
     <h3> สถานะหนังสือตรวจปล่อย </h3>

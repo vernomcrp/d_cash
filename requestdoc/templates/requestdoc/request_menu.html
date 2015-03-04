@@ -1,41 +1,18 @@
 {% extends "base.html" %}
 {% block extracss %}
     <style rel="stylesheet">
-    .container{
-        max-width: 500px;;
-    }
+        .container {
+            max-width: 500px;;
+        }
     </style>
 {% endblock %}
 {% block content %}
-    {#    <div class="navbar-header">#}
-    {#        <a class="navbar-brand" href="#">logged in as : {{ logged_in_user }}</a>#}
-    {##}
-    {#    </div>#}
-{#    <nav class="navbar navbar-inverse navbar-fixed-top">#}
-{#        <div class="container">#}
-{#            <div class="navbar-header">#}
-{#                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"#}
-{#                        aria-expanded="false" aria-controls="navbar">#}
-{#                    <span class="sr-only">Toggle navigation</span>#}
-{#                    <span class="icon-bar"></span>#}
-{#                    <span class="icon-bar"></span>#}
-{#                    <span class="icon-bar"></span>#}
-{#                </button>#}
-{#                <a class="navbar-brand" href="#">Project name</a>#}
-{#            </div>#}
-{#            <div id="navbar" class="collapse navbar-collapse">#}
-{#                <ul class="nav navbar-nav">#}
-{#                    <li class="active"><a href="#">Home</a></li>#}
-{#                    <li><a href="#about">About</a></li>#}
-{#                    <li><a href="#contact">Contact</a></li>#}
-{#                </ul>#}
-{#            </div>#}
-{#            <!--/.nav-collapse -->#}
-{#        </div>#}
-{#    </nav>#}
-    <div style="height:50px;">
-        <a class="navbar-brand" href="#">logged in as : {{ logged_in_user }}</a>
-        <a class="navbar-brand" href="{% url 'requestdoc.views.logout_view' %}">logout</a>
+
+    <div style="margin-left:10px; margin-top:10px; margin-bottom: 10px;">
+        <div class="btn-group">
+            <a class="btn btn-primary active" href="#">logged in as : {{ logged_in_user }}</a>
+            <a class="btn btn-warning" href="{% url 'requestdoc.views.logout_view' %}" role="button">logout</a>
+        </div>
     </div>
     <div class="container">
 
@@ -50,6 +27,9 @@
                 <a href="{% url 'requestdoc.views.list_request_document_status' %}">ตรวจสถานะคำขอตรวจปล่อยสินค้า</a><br>
                 {% if user.userdetail.is_officer %}
                     <a href="{% url 'requestdoc.views.approve_request_document' %}">พิจารณาคำขอหนังสือตรวจปล่อย</a><br>
+                {% endif %}
+                {% if user.userdetail.is_high_officer %}
+                    <a href="{% url 'requestdoc.views.final_approve_document' %}">พิจารณาคำขอ (สำหรับผ.อ.)</a><br>
                 {% endif %}
             </div>
         </div>

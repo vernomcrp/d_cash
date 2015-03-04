@@ -17,7 +17,17 @@
     {% block extracss %}{% endblock %}
 </head>
 <body id="index" class="home">
+
+<nav class="navbar navbar-default navbar-static-top">
+    <h2><strong>Prototype System</strong></h2>
+    <p class="text-left">
+        {% block nav %}
+        {% endblock %}
+    </p>
+</nav>
 {% block content %}{% endblock %}
+
+
 <script src="{% static 'js/jquery-2.1.3.min.js' %}"></script>
 <script src="{% static 'js/jquery-ui.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>

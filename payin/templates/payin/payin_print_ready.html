@@ -1,33 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="container">
-        <h1>ใบนำฝากชำระเงินค่าสินค้าและบริการ</h1>
 
-        {#        <p><strong>สำหรับลูกค้า</strong></p>#}
-        {##}
-        {#        <p>#}
-        {##}
-        {#        <div id="company-detail">#}
-        {#            <div>Consumer Name : {{ detail.company_name }}</div>#}
-        {#            <div>Consumer Address : {{ detail.address }}</div>#}
-        {#            <div>Consumer Tax No. : {{ detail.tax_number }}</div>#}
-        {#        </div>#}
-        {#        </p>#}
-        {##}
-        {#        <p><strong>สำหรับเจ้าหน้าที่ธนาคาร</strong></p>#}
-        {##}
-        {#        <p>#}
-        {##}
-        {#        <div id="company-detail">#}
-        {#            <div>Consumer Name : {{ detail.company_name }}</div>#}
-        {#            <div>Consumer Address : {{ detail.address }}</div>#}
-        {#            <div>Consumer Tax No. : {{ detail.tax_number }}</div>#}
-        {#        </div>#}
-        {#        </p>#}
-        {##}
-        {#        <p>#}
-        {#            <img src="{{ STATIC_URL }}test_svg.svg">#}
-        {#        </p>#}
+    <div class="container">
+        <div style="height:50px; margin-left: 10px;">
+            {% if logged_in_user %}
+                <div class="btn-group">
+                    <a class="btn btn-primary active" href="#">logged in as : {{ logged_in_user }}</a>
+                    <a class="btn btn-warning" href="{% url 'requestdoc.views.logout_view' %}" role="button">logout</a>
+                </div>
+            {% endif %}
+        </div>
+        <h1>ใบนำฝากชำระเงินค่าสินค้าและบริการ</h1>
         <div class="panel panel-default">
             <div class="panel-heading"><strong>สำหรับลูกค้า</strong></div>
             <div class="panel-body">

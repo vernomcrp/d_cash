@@ -10,7 +10,6 @@ from requestdoc.models import Invoice, RequestDoc, Product
 from datetime import datetime
 import random
 from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404
 
 from user_detail.models import ConsumerDetail
 import logging
@@ -35,7 +34,11 @@ def login_view(request):
             else:
                 return HttpResponse('disabled account')
         else:
-            return HttpResponse('login error')
+            error = {
+                'topic': 'Login Failed',
+                'detail': 'Wrong Username Or Password'
+            }
+            return render(request, 'error.html', {'error': error})
     else:
 
         return render(request, 'requestdoc/login.html', context)
@@ -249,5 +252,23 @@ def approve_request_document(request):
             payin.approved_date = datetime.today()
             payin.save()
             return redirect('/requestdoc/approve_document/')
+        else:
+            print 'Cannot get payin id from frontend'
+
+@login_required(login_url='/requestdoc/login')
+def final_approve_document(request):
+    if request.method == 'GET':
+        filtered_docs = filter(__find_matched_payin, RequestDoc.objects.all())
+        return render(request, 'requestdoc/approve_request_document.html',
+                      {'items': filtered_docs, 'logged_in_user': request.user})
+
+    elif request.method == 'POST':
+        payin_id = request.POST.get('approve_payin_id', None)
+        if payin_id:
+            payin = PayIn.objects.get(id=payin_id)
+            payin.final_approve = True
+            payin.final_approved_date = datetime.today()
+            payin.save()
+            return redirect('/requestdoc/final_approve_document/')
         else:
             print 'Cannot get payin id from frontend'

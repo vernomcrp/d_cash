@@ -15,7 +15,8 @@ class ConsumerDetail(models.Model):
 
 ROLES = (
     ('O', 'Officer'),
-    ('C', 'Consumer')
+    ('C', 'Consumer'),
+    ('V', 'High Officer')
 )
 
 
@@ -27,4 +28,7 @@ class UserDetail(models.Model):
         return u'%s is Officer (%s)' % (self.owner.username, self.is_officer())
 
     def is_officer(self):
-        return True if self.role == 'O' else False
+        return True if self.role == 'O' or self.role == 'V' else False
+
+    def is_high_officer(self):
+        return True if self.role == 'V' else False

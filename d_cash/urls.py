@@ -17,6 +17,7 @@ urlpatterns = patterns('',
     url(r'^requestdoc/request_menu/$', 'requestdoc.views.request_menu'),
     url(r'^requestdoc/request_document_status/$', 'requestdoc.views.list_request_document_status'),
     url(r'^requestdoc/approve_document/$', 'requestdoc.views.approve_request_document'),
+    url(r'^requestdoc/final_approve_document/$', 'requestdoc.views.final_approve_document'),
     url(r'^payin/print/(?P<request_doc_id>\d+)/$', 'payin.views.display_payin'),
     url(r'^register_new_consumer/new_user/$', 'register_new_consumer.views.registration_page')
 
