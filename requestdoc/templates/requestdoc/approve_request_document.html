@@ -37,11 +37,11 @@
                                         action="{% url 'requestdoc.views.approve_request_document' %}">
 {#                                    {%  csrf_token %}#}
                                     <input type="hidden" name="approve_payin_id" id="approve_payin_id" value="{{ item.payin.id }}"/>
-                                    <input type="submit" value="Approve"/>
+                                    <button type="submit" class="btn btn-default">Approve</button>
                                 </form>
                             {% endif %}
                         {% else %}
-                            Cannon approve now
+                            Cannot approve now
                         {% endif %}
                     </td>
                 </tr>

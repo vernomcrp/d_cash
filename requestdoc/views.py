@@ -52,6 +52,27 @@ def logout_view(request):
 
 
 @login_required(login_url='/requestdoc/login')
+def silent_approve(request):
+    """
+    Use for complete cycle of request doc's approvement
+    """
+    if request.method == 'GET':
+        filtered_docs = filter(__find_matched_payin, RequestDoc.objects.all())
+        return render(request, 'requestdoc/silent_approve.html',
+                      {'items': filtered_docs, 'logged_in_user': request.user})
+
+    else:
+        pay_in_id = request.POST.get('approve_payin_id', None)
+
+        # expect to have at least one payin
+        payin = PayIn.objects.filter(id=pay_in_id)[0]
+        if payin:
+            payin.paid = True
+            payin.save()
+        return redirect('requestdoc.views.silent_approve')
+
+
+@login_required(login_url='/requestdoc/login')
 def request_document_view_without_license(request):
     return render(request, 'requestdoc/request_view_without_license.html', {})
 

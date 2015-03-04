@@ -27,6 +27,7 @@
                 <a href="{% url 'requestdoc.views.list_request_document_status' %}">ตรวจสถานะคำขอตรวจปล่อยสินค้า</a><br>
                 {% if user.userdetail.is_officer %}
                     <a href="{% url 'requestdoc.views.approve_request_document' %}">พิจารณาคำขอหนังสือตรวจปล่อย</a><br>
+                    <a href="{% url 'requestdoc.views.silent_approve' %}">เปลี่ยนสถานะการชำระเงิน(for demo purpose)</a><br>
                 {% endif %}
                 {% if user.userdetail.is_high_officer %}
                     <a href="{% url 'requestdoc.views.final_approve_document' %}">พิจารณาคำขอ (สำหรับผ.อ.)</a><br>

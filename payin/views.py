@@ -14,6 +14,17 @@ def display_payin(request, request_doc_id):
     if request.method == 'GET':
         if request.user.userdetail.is_officer():
             request_user_id = request.session.get('request_user_id', None)
+            if not request_user_id:
+                return render(
+                    request,
+                    'error.html',
+                    {
+                        'error': {
+                            'topic': 'Cannot Check PayIn Document',
+                            'detail':'You must be a Owner of PayIn Document'
+                        }
+                    }
+                )
             request_user = User.objects.get(id=request_user_id)
         else:
             request_user = request.user
