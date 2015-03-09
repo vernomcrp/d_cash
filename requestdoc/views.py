@@ -293,3 +293,29 @@ def final_approve_document(request):
             return redirect('/requestdoc/final_approve_document/')
         else:
             print 'Cannot get payin id from frontend'
+
+@login_required(login_url='/requestdoc/login')
+def request_document_detail(request, request_doc_number):
+    if request.method == 'GET':
+        context = {}
+        request_docs = RequestDoc.objects.filter(request_doc_number=request_doc_number)
+        if not request_docs:
+            return HttpResponseNotFound()
+        request_doc = request_docs[0]
+        invoice_docs = request_doc.invoice_set.all()
+
+        context.update({
+            'consumer': request_doc.request_user,
+            'consumer_detail': request_doc.request_user.consumerdetail_set.all()[0],
+            'request_doc': request_doc,
+            'invoice_doc': invoice_docs[0],
+            'products': invoice_docs[0].product_set.all()
+        })
+
+        if invoice_docs:
+            context.update({
+                'products': invoice_docs[0].product_set.all()
+            })
+        return render(request, 'requestdoc/request_document_detail.html', context)
+    else:
+        return HttpResponseNotFound()

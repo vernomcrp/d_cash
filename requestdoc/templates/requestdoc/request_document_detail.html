@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Consumer: {{ consumer_detail.consumer_name }}</h3>
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item">Address: {{ consumer_detail.address }}</li>
+                        <li class="list-group-item">Tax Number: {{ consumer_detail.tax_number }}</li>
+                        <li class="list-group-item">Request Document No.: {{ request_doc.request_doc_number }}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Invoice: {{ invoice_doc.invoice_no }}</h3>
+                    </div>
+                    <ul class="list-group">
+                        <li class="list-group-item">Invoice Date: {{ invoice_doc.invoice_date }}</li>
+                        <li class="list-group-item">Invoice File: {{ request_doc.invoice_file }}</li>
+                        <li class="list-group-item">Invoice Location x={{ request_doc.location_x }}
+                            ,y={{ request_doc.location_y }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Products</h3>
+            </div>
+            <ul class="list-group">
+                {% for product in products %}
+                    <li class="list-group-item">{{ product.product_name }}, license: {{ product.license_no }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <a href="javascript:window.open('','_self').close();">close</a>
+    </div>
+{% endblock %}

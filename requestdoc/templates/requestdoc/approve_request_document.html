@@ -15,7 +15,7 @@
             {% for item in items %}
 
                 <tr>
-                    <td>{{ item.request_doc_number }}</td>
+                    <td><a target="_blank" href="{% url 'requestdoc.views.request_document_detail' item.request_doc_number %}">{{ item.request_doc_number }}</a></td>
                     <td>{{ item.payin.created_date }}</td>
                     <td>
                         {% if item.payin.paid %}
