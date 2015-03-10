@@ -22,9 +22,9 @@
                     </div>
                     <ul class="list-group">
                         <li class="list-group-item">Invoice Date: {{ invoice_doc.invoice_date }}</li>
-                        <li class="list-group-item">Invoice File: {{ request_doc.invoice_file }}</li>
-                        <li class="list-group-item">Invoice Location x={{ request_doc.location_x }}
-                            ,y={{ request_doc.location_y }}</li>
+                        <li class="list-group-item">Invoice File: <a href="{% url 'requestdoc.views.download' request_doc.request_doc_number  %}">{{ file }}</a></li>
+                        <li class="list-group-item">Invoice Location x:{{ invoice_doc.location_x }}
+                            ,y:{{ invoice_doc.location_y }}</li>
                     </ul>
                 </div>
             </div>

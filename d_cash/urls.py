@@ -4,6 +4,7 @@ from django.contrib import admin
 from d_cash import settings
 from django.conf.urls.static import static
 
+
 urlpatterns = patterns('',
     # url(r'^$', TemplateView.as_view(template_name='base.html')),
     url(r'^admin/', include(admin.site.urls)),
@@ -22,7 +23,8 @@ urlpatterns = patterns('',
     url(r'^register_new_consumer/new_user/$', 'register_new_consumer.views.registration_page'),
     url(r'^requestdoc/request_doc_detail/(?P<request_doc_number>\d+)/$', 'requestdoc.views.request_document_detail'),
     # Use for demo purpose
-    url(r'^requestdoc/silent_approve/$', 'requestdoc.views.silent_approve')
+    url(r'^requestdoc/silent_approve/$', 'requestdoc.views.silent_approve'),
+    url(r'^requestdoc/download/(?P<request_doc_number>\d+)/$', 'requestdoc.views.download')
 
 )
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

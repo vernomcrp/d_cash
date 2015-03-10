@@ -55,7 +55,7 @@ MIDDLEWARE_CLASSES = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-   # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 ROOT_URLCONF = 'd_cash.urls'
@@ -105,6 +105,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(STATIC_ROOT, 'bootstrap'),
 )
+#
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_URL = '/media/'
 
 TEMPLATE_PATH = os.path.join(BASE_DIR, 'templates')
 TEMPLATE_DIRS = (

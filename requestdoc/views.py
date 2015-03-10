@@ -309,7 +309,8 @@ def request_document_detail(request, request_doc_number):
             'consumer_detail': request_doc.request_user.consumerdetail_set.all()[0],
             'request_doc': request_doc,
             'invoice_doc': invoice_docs[0],
-            'products': invoice_docs[0].product_set.all()
+            'products': invoice_docs[0].product_set.all(),
+            'file': invoice_docs[0].invoice_file.name.split('/')[-1]
         })
 
         if invoice_docs:
@@ -319,3 +320,16 @@ def request_document_detail(request, request_doc_number):
         return render(request, 'requestdoc/request_document_detail.html', context)
     else:
         return HttpResponseNotFound()
+
+@login_required()
+def download(request, request_doc_number):
+    request_docs = RequestDoc.objects.filter(request_doc_number=request_doc_number)
+    if request_docs:
+        request_doc = request_docs[0]
+        invoice_docs = request_doc.invoice_set.all()
+        filename = invoice_docs[0].invoice_file.name.split('/')[-1]
+        filepath = invoice_docs[0].invoice_file.name
+        f = file(filepath, 'r')
+        response = HttpResponse(f, content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="%s"' % filename
+        return response
