@@ -76,15 +76,14 @@
                 {% if products %}
                     {% for product in products %}
                         <tr>
-                            <td></td>
+                            <td>{{ forloop.counter }}</td>
                             <td>{{ product.product_name }}</td>
                             <td>{{ product.standard_industrial_no }}</td>
                             <td>{{ product.license_no }}</td>
                             <td>{{ product.quantity }} x {{ product.unit }} </td>
-                            <td></td>
-                            <td></td>
+                            <td><button class="btn btn-default" disabled>Update</button></td>
+                            <td><button class="btn btn-default" disabled>Delete</button></td>
                         </tr>
-
                     {% endfor %}
                 {% endif %}
             </table>
